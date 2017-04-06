@@ -18,6 +18,9 @@ body {
     margin: 0 auto;
     text-align: center;
 }
+#wrapper {
+    height: 130px;
+}
 #again {
     display: none;
 }
