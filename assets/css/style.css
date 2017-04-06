@@ -1,0 +1,51 @@
+body, html, div, header, footer, section, article, aside {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-image: url(../images/background.jpg);
+    background-repeat: no-repeat;
+    background-position: center bottom; 
+    background-size: 100%;
+    width: 100%;
+    background-color: black;
+    text-align: center;
+    margin: 0 auto;
+    font-family: 'Ultra', serif;
+}
+#container {
+    width: 640px;
+    margin: 0 auto;
+    text-align: center;
+}
+#again {
+    display: none;
+}
+button {
+    font-family: 'Ultra', serif;
+    font-size: 1.2em;
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+}
+#ltrFields {
+    font-size: 2em;
+}
+#play, #over {
+    font-size: 2em;
+}
+#ltrGrp {
+    display: none;
+}
+#ltrGrp button {
+    padding:10px;
+}
+#preloader {
+    display: none;
+}
+#music {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
