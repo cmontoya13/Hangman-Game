@@ -9,7 +9,8 @@ var underline; // underline placeholders
 var goodLetters = 0; // counts good letter choices
 var missedLetter = 0; // counts bad letter choices
 var hanginGallows; // gallows images
-var letterGroup; // group of letter choices
+var letterGroup; // group of letter buttons
+var letterButtons; // letter button children
 var i;
 
 // LOADS EACH WORD OF ARRAY
@@ -64,76 +65,75 @@ function letters() {
     var indices = [];
     for (i=0; i<currentWord.length; i++) {
         if (currentWord[i] === letter) indices.push(i);
-    }
-    // number of failed 'missedLetter' before hangman is hung and game ends
-    if (missedLetter < 5) {
-        // checks for single or multiple same letters
-        if (indices.length != 0) {
-            // inserts the matching letter(s) into appropriate placeholder
-            for (i=0; i<indices.length; i++) {
-                var index = indices[i];
-                underline.children[index].innerHTML = letter;
-                event.target.style.display = "none"; // hides letter button after use
-            }
-            var gunShot = document.getElementById("gunshot");
-            gunShot.play(); // plays horse audio
-            // concat multiple index letters within the letterCount
-            goodLetters = goodLetters+indices.length-1;
-            goodLetters++;
-            // compares correct letters to wordArray to see if word solved
-            if (goodLetters >= wordArray.length) {
+    }    
+
+    // checks for single or multiple same letters
+    if (indices.length != 0) {
+        // inserts the matching letter(s) into appropriate placeholder
+        for (i=0; i<indices.length; i++) {
+            var index = indices[i];
+            underline.children[index].innerHTML = letter;
+            event.target.style.display = "none"; // hides letter button after use
+        }
+        var gunShot = document.getElementById("gunshot");
+        gunShot.play(); // plays horse audio
+        // concat multiple index letters within the letterCount
+        goodLetters = goodLetters+indices.length-1;
+        goodLetters++;
+        // compares correct letters to wordArray to see if word solved
+        if (goodLetters >= wordArray.length) {
+            // applies a delay to show completed word
+            setTimeout(function wordDelay() {                               
+                playGame.style.display = "inline-block";
+                playGame.innerHTML = "NICE SHOOTIN'";                    
+                hanginGallows.src = "assets/images/gallows.png"; // changes gallows img
                 // hides all letter buttons
                 letterButtons = document.getElementById("ltrGrp").children;
                 for (i=0; i<letterButtons.length; i++) {
                     letterButtons[i].style.display = "none";
                 }
+                // removes all letter _ placeholders
                 for (i=0; i<underline.childNodes.length; i++) {
                     underline.innerHTML = "";
                 }
-                playGame.style.display = "inline-block";
-                playGame.innerHTML = "NICE SHOOTIN'";
-                // changes gallows img
-                hanginGallows.src = "assets/images/gallows.png";
-                // applies a delay between words
-                setTimeout(function wordSolved() {
-                    missedLetter = 0;            
-                    nextWord();
-                }, 3000);                                
-            }
+            }, 1000);
+            // applies a delay between words
+            setTimeout(function wordSolved() {            
+                nextWord();
+            }, 2000);                               
         }
-        // runs if letter is not in currentWord
-        else {
-            document.getElementById("horse").play(); // plays horse audio
-            // changes gallows img
-            hanginGallows.src = "assets/images/gallows" + missedLetter + ".png";
-            missedLetter++;
-            event.target.style.display = "none"; // hides letter button after use
-            console.log(missedLetter);
-            console.log(wordArray.length);
-            console.log(goodLetters);
-        }        
     }
-    // Runs when number of 'missedLetter' is reached
+    // runs if letter is not in currentWord
     else {
-        letterGroup.removeEventListener("click", letters, false); // removes event listener from letter buttons     
-        playGame.style.display = "inline-block";
-        playGame.innerHTML = "YOU'RE HUNG<br>Ar u drinkin' whisky?";
-        // changes gallows img
-        hanginGallows.src = "assets/images/gallows5.png";
-        // hides all letter buttons
-        letterButtons = letterGroup.children;
-        for (i=0; i<letterButtons.length; i++) {
-            letterButtons[i].style.display = "none";
+        // checks number of 'missedLetter' count
+        if (missedLetter < 5) { 
+            document.getElementById("horse").play(); // plays horse audio            
+            hanginGallows.src = "assets/images/gallows" + missedLetter + ".png"; // changes gallows img
+            event.target.style.display = "none"; // hides letter button after use
+            missedLetter++;
         }
-        for (i=0; i<underline.childNodes.length; i++) {
-            underline.innerHTML = "";
-        }
-        // applies a delay between words 
-        setTimeout(function wordFailed() {            
-            missedLetter = 0;
-            nextWord();
-        }, 3000);
-    }
+        // runs when number of 'missedLetter' is reached
+        else { 
+            letterGroup.removeEventListener("click", letters, false); // removes event listener from letter buttons     
+            playGame.style.display = "inline-block";
+            playGame.innerHTML = "YOU'RE HUNG<br>Are u drinkin' whisky?";
+            document.getElementById("horse").play(); // plays horse audio         
+            hanginGallows.src = "assets/images/gallows5.png"; // changes gallows img
+            // hides all letter buttons
+            letterButtons = letterGroup.children;
+            for (i=0; i<letterButtons.length; i++) {
+                letterButtons[i].style.display = "none";
+            }
+            // removes all letter _ placeholders
+            for (i=0; i<underline.childNodes.length; i++) {
+                underline.innerHTML = "";
+            }
+            // applies a delay between words 
+            setTimeout(function wordFailed() {
+                nextWord();
+            }, 3000);
+        }           
+    }        
 }
 
 // SETS UP FOR NEXT WORD ATTEMPT
@@ -141,13 +141,13 @@ function nextWord() {
     missedLetter = 0; // clears 'missedLetter' before next word challenge
     goodLetters = 0; // clears good letter count
     wordCounter++;
+    letterButtons = document.getElementById("ltrGrp").children;
 
     // shows all letter buttons
-    var letterButtons = letterGroup.children;
     for (i=0; i<letterButtons.length; i++) {
         letterButtons[i].style.display = "inline-block";
     }    
-    // removes letter _ placeholders
+    // removes all letter _ placeholders
     for (i=0; i<underline.childNodes.length; i++) {
         underline.innerHTML = "";
     }
@@ -164,16 +164,15 @@ function nextWord() {
 // END OF GAME WHEN ALL WORDS HAVE BEEN PLAYED
 function endGame() {   
     // hides all letter buttons
-    var letterButtons = letterGroup.children;
-
     for (i=0; i<letterButtons.length; i++) {
         letterButtons[i].style.display = "none";
     }
+    // removes all letter _ placeholders
     for (i=0; i<underline.childNodes.length; i++) {
         underline.innerHTML = "";
     }
-    // resets gallows img
-    hanginGallows.src = "assets/images/gallows.png";
+    
+    hanginGallows.src = "assets/images/gallows.png"; // resets gallows img
     playGame.style.display = "inline-block"; // hide PLAY GAME button
     playGame.innerHTML = "NO MORE TO HANG<br>Click Here to Try Again";
     wordCounter = 0; // reset the words available for a restart
