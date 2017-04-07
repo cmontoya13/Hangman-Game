@@ -1,6 +1,7 @@
-body, html, div, header, footer, section, article, aside {
+html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 body {
     background-image: url(../images/background.jpg);
@@ -15,7 +16,7 @@ body {
 }
 #container {
     width: 640px;
-    margin: 0 auto;
+    margin: -20px auto 0;
     text-align: center;
 }
 #wrapper {
