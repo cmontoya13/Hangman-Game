@@ -1,17 +1,17 @@
 var playGame = document.getElementById("play");
 playGame.addEventListener("click", loadWord, false);
 
-var words = ["WESTERN","HORSEBACK","WINCHESTER","SHOOTOUT","OUTLAW","TOMBSTONE","TUMBLEWEED","RUSTLER","CARPETBAGGER","SHOWGIRL","SALOON","CATTLEMAN"]; //Use as many or few words as you like
-var wordCounter = 0; // counts each word used
-var currentWord; // current word
-var wordArray; // array of current word
-var underline; // underline placeholders
-var goodLetters = 0; // counts good letter choices
-var missedLetter = 0; // counts bad letter choices
-var hanginGallows; // gallows images
-var letterGroup; // group of letter buttons
-var letterButtons; // letter button children
-var i;
+var words = ["WESTERN","HORSEBACK","WINCHESTER","SHOOTOUT","OUTLAW","TOMBSTONE","TUMBLEWEED","RUSTLER","CARPETBAGGER","SHOWGIRL","SALOON","CATTLEMAN"], //Use as many or few words as you like
+wordCounter = 0, // counts each word used
+currentWord, // current word
+wordArray, // array of current word
+underline, // underline placeholders
+goodLetters = 0, // counts good letter choices
+missedLetter = 0, // counts bad letter choices
+hanginGallows, // gallows images
+letterGroup, // group of letter buttons
+letterButtons, // letter button children
+i;
 
 // LOADS EACH WORD OF ARRAY
 function loadWord() {    
@@ -47,8 +47,8 @@ function createLines() {
     underline = document.getElementById("ltrFields");
 
     for (i=0; i<wordArray.length; i++) {           
-        var box = document.createElement("span");
-        var space = document.createTextNode(" ");
+        var box = document.createElement("span"),
+        space = document.createTextNode(" ");
         box.setAttribute("style","border-bottom:solid 1px white; width:30px; display:inline-block; text-align:center; vertical-align:bottom; color: white;");
         underline.appendChild(box);
         underline.appendChild(space);
@@ -116,7 +116,7 @@ function letters() {
         else { 
             letterGroup.removeEventListener("click", letters, false); // removes event listener from letter buttons     
             playGame.style.display = "inline-block";
-            playGame.innerHTML = "YOU'RE HUNG<br>Are u drinkin' whisky?";
+            playGame.innerHTML = "YOU'RE HUNG<br>Were u drinkin' whisky?";
             document.getElementById("horse").play(); // plays horse audio         
             hanginGallows.src = "assets/images/gallows5.png"; // changes gallows img
             // hides all letter buttons
