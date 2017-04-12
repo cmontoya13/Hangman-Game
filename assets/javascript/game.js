@@ -14,12 +14,11 @@ letterButtons, // letter button children
 i;
 
 // LOADS EACH WORD OF ARRAY
-function loadWord() {    
+function loadWord() {
     currentWord = words[wordCounter]; // sets current word
     wordArray = words[wordCounter].split(""); // array of current word
     letterGroup = document.getElementById("ltrGrp");
     letterGroup.style.display = "inline-block"; // shows letter button choices
-    letterGroup.addEventListener("click", letters, false); // event listener of letter buttons
     playGame.style.display = "none"; // hides play button
 
     // resets gallows img
@@ -27,9 +26,10 @@ function loadWord() {
     hanginGallows.src = "assets/images/gallows.png";    
 
     // show all letter buttons
-    var letterButtons = letterGroup.children;
+    letterButtons = letterGroup.children;
     for (i=0; i<letterButtons.length; i++) {
         letterButtons[i].style.display = "inline-block";
+        letterButtons[i].addEventListener("click", letters, false);
     }
    
     if (currentWord) {
@@ -57,14 +57,15 @@ function createLines() {
 
 // CAPTURES LETTER CHOICES AND APPLIES TO PLACEHOLDERS
 function letters() {
-    // json of word miss messages
+    // array of word miss messages
     var miss = [
-        "YOU'RE HUNG<br>Were u drinkin' whisky?",
-        "YOU'RE HUNG<br>Are u city slicker?",
-        "YOU'RE HUNG<br>Momma must be proud of u?",
+        "YOU'RE HUNG<br>Drinkin' whisky?",
+        "YOU'RE HUNG<br>U a city slicker?",
+        "YOU'RE HUNG<br>Been in the altitude?",
         "YOU'RE HUNG<br>On the trail too long?",
-        "YOU'RE HUNG<br>Range fleas suck the blood from ur head?",
-        "YOU'RE HUNG<br>Maybe poker is ur game?"],
+        "YOU'RE HUNG<br>Got a horse smarter than u",
+        "YOU'RE HUNG<br>Maybe poker is ur game?"
+    ],
     letter = event.target.innerHTML, // captures the letter of the click
     // sets up current word
     wordArray = words[wordCounter].split(""), // array of current word    
@@ -83,7 +84,11 @@ function letters() {
             underline.children[index].innerHTML = letter;
             event.target.style.display = "none"; // hides letter button after use
         }
-        document.getElementById("gunshot").play(); // play horse audio
+        // play gunshot audio with pause/currentTime code for rapid fire
+        var gun = document.getElementById("gunshot");
+        gun.pause();
+        gun.currentTime = 0;
+        gun.play();
         // concat multiple index letters within the letterCount
         goodLetters = goodLetters+indices.length-1;
         goodLetters++;
@@ -93,7 +98,7 @@ function letters() {
             setTimeout(function wordDelay() {                               
                 playGame.style.display = "inline-block";
                 playGame.innerHTML = "NICE SHOOTIN' TEX";
-                document.getElementById("bell").play(); // plays dinner bell audio
+                document.getElementById("bell").play(); // play dinner bell audio
                 hanginGallows.src = "assets/images/gallows.png"; // changes gallows img
                 // hides all letter buttons
                 letterButtons = document.getElementById("ltrGrp").children;
@@ -114,8 +119,12 @@ function letters() {
     // runs if letter is not in currentWord
     else {
         // checks number of 'missedLetter' count
-        if (missedLetter < 5) { 
-            document.getElementById("horse").play(); // plays horse audio            
+        if (missedLetter < 5) {
+            // play horse audio with pause/currentTime code for rapid fire
+            var horse = document.getElementById("horse");
+            horse.pause();
+            horse.currentTime = 0;
+            horse.play();            
             hanginGallows.src = "assets/images/gallows" + missedLetter + ".png"; // changes gallows img
             event.target.style.display = "none"; // hides letter button after use
             missedLetter++;
