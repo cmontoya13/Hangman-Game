@@ -1,13 +1,14 @@
 var playGame = document.getElementById("play");
 playGame.addEventListener("click", loadWord, false);
 
-var words = ["WESTERN","HORSEBACK","WINCHESTER","SHOOTOUT","OUTLAW","TOMBSTONE","TUMBLEWEED","RUSTLER","CARPETBAGGER","SHOWGIRL","SALOON","CATTLEMAN"], //Use as many or few words as you like
+var words = ["WESTERN","SALOON","HORSEBACK","WINCHESTER","SHOOTOUT","OUTLAW","TOMBSTONE","TUMBLEWEED","RUSTLER","CARPETBAGGER","SHOWGIRL","CATTLEMAN"], //Use as many or few words as you like
 wordCounter = 0, // counts each word used
 currentWord, // current word
 wordArray, // array of current word
 underline, // underline placeholders
 goodLetters = 0, // counts good letter choices
 missedLetter = 0, // counts bad letter choices
+wordSolved = 0,
 hanginGallows, // gallows images
 letterGroup, // group of letter buttons
 letterButtons, // letter button children
@@ -98,6 +99,7 @@ function letters() {
             setTimeout(function wordDelay() {                               
                 playGame.style.display = "inline-block";
                 playGame.innerHTML = "NICE SHOOTIN' TEX";
+                wordSolved++;
                 document.getElementById("bell").play(); // play dinner bell audio
                 hanginGallows.src = "assets/images/gallows.png"; // changes gallows img
                 // hides all letter buttons
@@ -192,6 +194,12 @@ function endGame() {
     
     hanginGallows.src = "assets/images/gallows.png"; // resets gallows img
     playGame.style.display = "inline-block"; // hide PLAY GAME button
-    playGame.innerHTML = "NO MORE TO HANG<br>Click Here to Try Again";
-    wordCounter = 0; // reset the words available for a restart
+    if (wordSolved != words.length) {
+        playGame.innerHTML = "NO MORE TO HANG<br>Click Here to Try Again";
+    }
+    else {
+        playGame.innerHTML = "ALL WORDS SOLVED!<br>You're a Sharpshooter";
+    }
+    wordCounter = 0; // reset the word count for a restart
+    wordSolved = 0; // reset the words solved count for a restart
 }

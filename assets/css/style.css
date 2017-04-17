@@ -13,11 +13,15 @@ body {
     text-align: center;
     margin: 0 auto;
     font-family: 'Ultra', serif;
+    overflow: hidden;
 }
 #container {
-    width: 640px;
+    width: 500px;
     margin: -20px auto 0;
     text-align: center;
+}
+#headerImg {
+    width: 400px;
 }
 #wrapper {
     height: 130px;
@@ -44,6 +48,9 @@ button {
 }
 #ltrGrp button {
     padding:10px;
+}
+#gallows {
+    width: 300px;
 }
 #preloader {
     display: none;
